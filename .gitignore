@@ -1,0 +1,11 @@
+._*
+parser.ml
+parser.mli
+token.ml
+*.cmi
+*.cmo
+*.cma
+*.cmx
+*.cmxa
+*.o
+*.a
