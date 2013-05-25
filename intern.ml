@@ -15,6 +15,7 @@ let extend s db =
   let n' = succ db.n in 
   { n = n'; r = R.extend db.r s n' }
 
+(* Global variable *)
 let db = ref empty
 
 let reset () =

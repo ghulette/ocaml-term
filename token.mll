@@ -10,7 +10,10 @@ rule lex = parse
   | [' ' '\n' '\t']   { lex lexbuf }
   | "("               { LPAREN }
   | ")"               { RPAREN }
+  | "["               { LBRACKET }
+  | "]"               { RBRACKET }
+  | "<"               { LANGLE }
+  | ">"               { RANGLE }
   | ","               { COMMA }
   | digit+ as s       { INT (Int32.of_string s) } 
   | ident as s        { ID s }
-  | eof               { EOF }

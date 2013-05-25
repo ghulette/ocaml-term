@@ -1,4 +1,4 @@
-%token LPAREN RPAREN COMMA EOF
+%token LPAREN RPAREN LBRACKET RBRACKET LANGLE RANGLE COMMA
 %token <Int32.t> INT
 %token <Int64.t> REAL
 %token <string> ID
@@ -12,15 +12,25 @@ open Aterm
 
 %%
 
-exp1:
-  | exp1 exp2              { ATermAppl ($1,$2) }
-  | exp2                   { $1 }
+afun: ID { Intern.intern $1 }
 
-exp2:
-  | ID                     { AFun $1 }
-  | INT                    { ATermInt $1 }
-  | REAL                   { ATermReal $1 }
-  | LPAREN exp1 RPAREN     { $2 }
+aterms1:
+  | aterms1 COMMA aterm     { $3 :: $1 }
+  | aterm                   { [$1] }
+
+aterms: aterms1 { List.rev $1 }
+
+appl:
+  | afun LPAREN aterms RPAREN { ATermAppl ($1,$3) }
+  | afun                      { ATermAppl ($1,[]) }
+
+list:
+  | LBRACKET RBRACKET         { ATermList [] }
+  | LBRACKET aterms RBRACKET  { ATermList $2 }
 
 aterm:
-  | exp1 EOF               { $1 }
+  | appl                   { $1 }
+  | list                   { $1 }
+  | LANGLE aterm RANGLE    { ATermPlaceholder $2 }
+  | INT                    { ATermInt $1 }
+  | REAL                   { ATermReal $1 }
