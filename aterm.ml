@@ -1,7 +1,5 @@
-type afun = Intern.t
-
 type t = 
-  | ATermAppl of afun * (t list)
+  | ATermAppl of Intern.t * (t list)
   | ATermList of t list
   | ATermInt of Int32.t
   | ATermReal of Int64.t
