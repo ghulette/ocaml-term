@@ -1,9 +1,13 @@
+module Int = struct 
+  type t = int 
+  let compare = compare 
+end
 
-module R = Relation.Make (String) (struct type t = int let compare = compare end)
+module R = Relation.Make (String) (Int)
 
 type t = int
 
-type db = {
+type m = {
   n : int;
   r : R.t
 }
@@ -11,22 +15,23 @@ type db = {
 let empty = 
   { n = 0; r = R.empty }
 
-let extend s db = 
-  let n' = succ db.n in 
-  { n = n'; r = R.extend db.r s n' }
+let extend s m = 
+  let n' = succ m.n in 
+  { n = n'; r = R.extend m.r s n' }
 
-(* Global variable *)
-let db = ref empty
-
-let reset () =
-  db := empty
-
-let intern s = 
-  match R.lookupl !db.r s with
+let put m s = 
+  match R.lookupl !m.r s with
   | Some n -> n
-  | None -> db := extend s !db; !db.n
+  | None -> m := extend s !m; !m.n
 
-let to_string i =
-  match R.lookupr !db.r i with
+let get m i =
+  match R.lookupr !m.r i with
   | Some s -> s
   | None -> raise Not_found
+
+(* Use a global string database. *)
+
+let db = ref empty
+let reset () = db := empty
+let intern = put db
+let to_string = get db

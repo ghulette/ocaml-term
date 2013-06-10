@@ -31,6 +31,6 @@ list:
 aterm:
   | appl                   { $1 }
   | list                   { $1 }
-  | LANGLE aterm RANGLE    { ATermPlaceholder $2 }
+  | LANGLE afun RANGLE     { ATermVar $2 }
   | INT                    { ATermInt $1 }
   | REAL                   { ATermReal $1 }
