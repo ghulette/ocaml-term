@@ -5,6 +5,7 @@
 
 %{
 open Aterm
+open Intern
 %}
 
 %start aterm
@@ -12,7 +13,7 @@ open Aterm
 
 %%
 
-afun: ID { Intern.intern $1 }
+afun: ID { intern $1 }
 
 aterms1:
   | aterms1 COMMA aterm     { $3 :: $1 }
@@ -21,16 +22,16 @@ aterms1:
 aterms: aterms1 { List.rev $1 }
 
 appl:
-  | afun LPAREN aterms RPAREN { ATermAppl ($1,$3) }
-  | afun                      { ATermAppl ($1,[]) }
+  | afun LPAREN aterms RPAREN { TermAppl ($1,$3) }
+  | afun                      { TermAppl ($1,[]) }
 
 list:
-  | LBRACKET RBRACKET         { ATermList [] }
-  | LBRACKET aterms RBRACKET  { ATermList $2 }
+  | LBRACKET RBRACKET         { TermList [] }
+  | LBRACKET aterms RBRACKET  { TermList $2 }
 
 aterm:
   | appl                   { $1 }
   | list                   { $1 }
-  | LANGLE afun RANGLE     { ATermVar $2 }
-  | INT                    { ATermInt $1 }
-  | REAL                   { ATermReal $1 }
+  | LANGLE afun RANGLE     { TermVar $2 }
+  | INT                    { TermInt $1 }
+  | REAL                   { TermReal $1 }
