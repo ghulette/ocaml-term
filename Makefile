@@ -2,11 +2,12 @@ SOURCES = trie.mli trie.ml \
 					prefix.mli prefix.ml \
 					relation.mli relation.ml \
 					intern.mli intern.ml \
-					aterm.ml \
-					parser.mly token.mll \
+					env.mli env.ml \
+					term.ml \
+					grammar.mly token.mll \
 					main.ml
-RESULT  = aterm
+RESULT  = term
 
-all: native-code-library byte-code-library
+all: byte-code-library native-code-library
 
 include OCamlMakefile

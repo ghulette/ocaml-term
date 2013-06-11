@@ -1,6 +1,6 @@
 ._*
-parser.ml
-parser.mli
+grammar.ml
+grammar.mli
 token.ml
 *.cmi
 *.cmo

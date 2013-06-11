@@ -1,5 +1,5 @@
 {
-open Parser
+open Grammar
 }
 
 let digit = ['0'-'9']

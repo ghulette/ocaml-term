@@ -7,6 +7,8 @@ module R = Relation.Make (String) (Int)
 
 type t = int
 
+let compare = compare
+
 type m = {
   n : int;
   r : R.t
