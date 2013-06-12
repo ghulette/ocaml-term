@@ -1,5 +1,7 @@
 SOURCES = trie.mli trie.ml \
 					prefix.mli prefix.ml \
+					option.mli option.ml \
+					monad.mli monad.ml \
 					relation.mli relation.ml \
 					intern.mli intern.ml \
 					env.mli env.ml \

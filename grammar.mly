@@ -13,7 +13,7 @@ open Intern
 
 %%
 
-tfun: ID { intern $1 }
+tfun: ID                  { intern $1 }
 
 terms1:
   | terms1 COMMA term     { $3 :: $1 }
@@ -33,5 +33,5 @@ term:
   | appl                   { $1 }
   | list                   { $1 }
   | LANGLE tfun RANGLE     { TermVar $2 }
-  | INT                    { TermInt $1 }
-  | REAL                   { TermReal $1 }
+  | INT                    { TermVal (IntVal $1) }
+  | REAL                   { TermVal (RealVal $1) }
