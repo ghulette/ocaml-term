@@ -8,9 +8,9 @@ type var = M.key
 
 let empty = M.empty
 let singleton = M.singleton
-let lookup = M.find
 
-(* let alias x1 x2 = *)
+let rec lookup x e = 
+  try Some (M.find x e) with Not_found -> None
 
 let extend x v e =
   try 

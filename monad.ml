@@ -13,7 +13,8 @@ module type S = sig
   val fold : ('a -> 'b -> 'a t) -> 'a -> 'b list -> 'a t
 end
 
-module Make (M : MonadDef) : (S with type 'a t = 'a M.t) = struct
+module Make (M : MonadDef) : (S with type 'a t = 'a M.t) = 
+struct
   open M
 
   type 'a t = 'a M.t
@@ -27,19 +28,17 @@ module Make (M : MonadDef) : (S with type 'a t = 'a M.t) = struct
 
   let rec sequence = function
     | [] -> pure []
-    | m::ms -> begin
+    | m::ms ->
         m >>= fun x ->
         sequence ms >>= fun xs ->
         pure (x::xs)
-      end
 
   let map f xs = 
     sequence (List.map f xs)
 
   let rec fold f x = function
     | [] -> pure x
-    | y::ys -> begin
+    | y::ys ->
         f x y >>= fun x' ->
         fold f x' ys
-      end
 end
