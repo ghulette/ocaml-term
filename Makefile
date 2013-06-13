@@ -1,4 +1,5 @@
-SOURCES = trie.mli trie.ml \
+SOURCES = basics.mli basics.ml \
+					trie.mli trie.ml \
 					prefix.mli prefix.ml \
 					option.mli option.ml \
 					monad.mli monad.ml \
