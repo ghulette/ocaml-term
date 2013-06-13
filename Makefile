@@ -6,7 +6,7 @@ SOURCES = basics.mli basics.ml \
 					relation.mli relation.ml \
 					intern.mli intern.ml \
 					env.mli env.ml \
-					term.ml \
+					term.mli term.ml \
 					grammar.mly token.mll \
 					main.ml
 RESULT  = term
