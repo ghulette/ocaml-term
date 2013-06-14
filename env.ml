@@ -15,9 +15,12 @@ let rec lookup x e =
 let extend x v e =
   try 
     let v' = M.find x e in
-    if v = v' then None else Some (M.add x v e)
+    if v = v' then Some e else None
   with 
     Not_found -> Some (M.add x v e)
+
+let alias x y e = 
+  Some e
 
 let union e1 e2 = 
   fold (fun e (x,v) -> extend x v e) e1 (M.bindings e2)
