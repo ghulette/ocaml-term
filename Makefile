@@ -2,6 +2,7 @@ SOURCES = basics.mli basics.ml \
 					trie.mli trie.ml \
 					prefix.mli prefix.ml \
 					option.mli option.ml \
+					lazylist.mli lazylist.ml \
 					monad.mli monad.ml \
 					relation.mli relation.ml \
 					intern.mli intern.ml \
