@@ -12,4 +12,8 @@ type t =
   | TermList of t list
   | TermAppl of atom * t list
 
+type env = t Env.t
+
+val to_string : t -> string
 val is_ground : t -> bool
+val unify : t -> t -> env -> env option
