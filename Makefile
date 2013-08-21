@@ -1,7 +1,5 @@
-SOURCES = trie.mli trie.ml \
-          prefix.mli prefix.ml \
-          option.mli option.ml \
-          lazylist.mli lazylist.ml \
+SOURCES = util.mli util.ml \
+	  option.mli option.ml \
           monad.mli monad.ml \
           relation.mli relation.ml \
           intern.mli intern.ml \

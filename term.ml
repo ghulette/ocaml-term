@@ -1,5 +1,4 @@
 module O : (Monad.S with type 'a t = 'a option) = Monad.Make (Option)
-open O
 
 type atom = Intern.t
 
@@ -23,21 +22,9 @@ let string_of_value = function
   | IntVal i -> Int32.to_string i
   | RealVal r -> Int64.to_string r
 
-let rec prepend_each s = function
-  | [] -> []
-  | x :: xs -> s :: x :: (prepend_each s xs)
-
-let intersperse s = function
-  | [] -> []
-  | x :: xs -> x :: (prepend_each s xs)
-
-let join sep ss =
-  let ss' = intersperse sep ss in
-  List.fold_left (^) "" ss' 
-
 let rec string_of_terms ts = 
   let ss = List.map string_of_term ts in
-  join "," ss
+  Util.join "," ss
 
 and string_of_term = function
   | TermVar x -> "<" ^ (Intern.to_string x) ^ ">"
@@ -79,5 +66,5 @@ let rec unify t1 t2 e =
   | TermVal v1,TermVal v2 when v1 = v2 -> Some e
   | TermAppl (f1,ts1),TermAppl (f2,ts2) when f1 = f2 ->
     let ts = List.combine ts1 ts2 in
-    fold (fun e (t1,t2) -> unify t1 t2 e) e ts
+    O.fold (fun e (t1,t2) -> unify t1 t2 e) e ts
   | _ -> None
