@@ -1,4 +1,5 @@
 module M : (Map.S with type key = Intern.t) = Map.Make (Intern)
+module O : (Monad.S with type 'a t = 'a option) = Monad.Make (Option)
 
 type 'a t = 'a M.t
 
@@ -18,4 +19,8 @@ let extend x v e =
   with 
     Not_found -> Some (M.add x v e)
 
-      
+let to_list e =
+  List.map (fun (x,v) -> (Intern.to_string x,v)) (M.bindings e)
+
+let from_list l =
+  O.fold (fun e (x,v) -> extend (Intern.intern x) v e) empty l

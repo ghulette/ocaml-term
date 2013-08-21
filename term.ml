@@ -1,4 +1,3 @@
-open Env
 module O : (Monad.S with type 'a t = 'a option) = Monad.Make (Option)
 open O
 
@@ -11,7 +10,7 @@ type value =
   | RealVal of Int64.t
 
 type t =
-  | TermVar of var
+  | TermVar of Env.var
   | TermVal of value
   | TermList of t list
   | TermAppl of atom * (t list)
@@ -57,16 +56,21 @@ let rec is_ground = function
   | TermAppl (_,ts) -> List.for_all is_ground ts
 
 let rec locate x e = 
-  match lookup x e with
+  match Env.lookup x e with
   | Some (TermVar y) -> locate y e
   | Some t -> Some t
   | None -> None
+
+let extend x v e =
+  match locate x e with
+  | Some _ -> None
+  | None -> Env.extend x v e
 
 let rec unify t1 t2 e =
   match t1,t2 with
   | TermVar x,TermVar y ->
     if x = y then Some e else
-      begin match lookup y e with
+      begin match Env.lookup y e with
       | Some t2' -> unify t1 t2' e
       | None -> extend x t2 e
       end
@@ -74,10 +78,6 @@ let rec unify t1 t2 e =
   | t,TermVar x -> extend x t e
   | TermVal v1,TermVal v2 when v1 = v2 -> Some e
   | TermAppl (f1,ts1),TermAppl (f2,ts2) when f1 = f2 ->
-    fold begin fun e (t1,t2) -> 
-      match unify t1 t2 e with 
-      | Some e' -> Some e' 
-      | None -> None
-    end
-      e (List.combine ts1 ts2)
+    let ts = List.combine ts1 ts2 in
+    fold (fun e (t1,t2) -> unify t1 t2 e) e ts
   | _ -> None
