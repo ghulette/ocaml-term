@@ -42,27 +42,20 @@ let rec is_ground = function
   | TermList ts -> List.for_all is_ground ts
   | TermAppl (_,ts) -> List.for_all is_ground ts
 
-let rec locate x e = 
+let rec dealias x e = 
   match Env.lookup x e with
-  | Some (TermVar y) -> locate y e
-  | Some t -> Some t
-  | None -> None
+  | Some (TermVar y) -> dealias y e
+  | _ -> x
 
-let extend x v e =
-  match locate x e with
-  | Some _ -> None
-  | None -> Env.extend x v e
+let bind x v e =
+  let x' = dealias x e in
+  Env.extend x' v e
 
 let rec unify t1 t2 e =
   match t1,t2 with
-  | TermVar x,TermVar y ->
-    if x = y then Some e else
-      begin match Env.lookup y e with
-      | Some t2' -> unify t1 t2' e
-      | None -> extend x t2 e
-      end
-  | TermVar x,t -> extend x t e
-  | t,TermVar x -> extend x t e
+  | TermVar x,TermVar y when dealias x e = dealias y e -> Some e
+  | TermVar x,t -> bind x t e
+  | t,TermVar x -> bind x t e
   | TermVal v1,TermVal v2 when v1 = v2 -> Some e
   | TermAppl (f1,ts1),TermAppl (f2,ts2) when f1 = f2 ->
     let ts = List.combine ts1 ts2 in

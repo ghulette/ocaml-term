@@ -13,11 +13,10 @@ let rec lookup x e =
 (* Extend will fail if the variable is already bound to a different
    value than the one we are trying to bind. *)
 let extend x v e =
-  try 
-    let v' = M.find x e in
-    if v = v' then Some e else None
-  with 
-    Not_found -> Some (M.add x v e)
+  match lookup x e with
+  | None -> Some (M.add x v e)
+  | Some v' when v = v' -> Some e
+  | Some _ -> None
 
 let to_list e =
   List.map (fun (x,v) -> (Intern.to_string x,v)) (M.bindings e)
