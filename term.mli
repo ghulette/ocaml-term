@@ -17,3 +17,4 @@ type env = t Env.t
 val to_string : t -> string
 val is_ground : t -> bool
 val unify : t -> t -> env -> env option
+val subst : env -> t -> t

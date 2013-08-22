@@ -61,3 +61,19 @@ let rec unify t1 t2 e =
     let ts = List.combine ts1 ts2 in
     O.fold (fun e (t1,t2) -> unify t1 t2 e) e ts
   | _ -> None
+
+let find x e =
+  let x' = dealias x e in
+  Env.lookup x' e
+
+let rec subst e t =
+  match t with
+  | TermVar x -> 
+    let x' = dealias x e in
+    begin match Env.lookup x' e with
+    | Some v -> v
+    | None -> TermVar x'
+    end
+  | TermVal _ -> t
+  | TermList ts -> TermList (List.map (subst e) ts)
+  | TermAppl (f,ts) -> TermAppl (f,List.map (subst e) ts)
