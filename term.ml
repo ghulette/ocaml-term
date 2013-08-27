@@ -74,7 +74,7 @@ let rec subst e t =
   | TermVal _ -> t
   | TermAppl (f,ts) -> TermAppl (f,List.map (subst e) ts)
 
-let rec unify t1 t2 e =
+let rec unify' t1 t2 e =
   match t1,t2 with
   | TermVar x,TermVar y when dealias x e = dealias y e -> Some e
   | TermVar x,t -> bind x t e
@@ -82,16 +82,19 @@ let rec unify t1 t2 e =
   | TermVal v1,TermVal v2 when v1 = v2 -> Some e
   | TermAppl (f1,ts1),TermAppl (f2,ts2) when f1 = f2 ->
     let ts = List.combine ts1 ts2 in
-    O.fold (fun e (t1,t2) -> unify t1 t2 e) e ts
+    O.fold (fun e (t1,t2) -> unify' t1 t2 e) e ts
   | _ -> None
 
-let find x e =
-  let x' = dealias x e in
-  Env.lookup x' e
+let unify t1 t2 =
+  unify' t1 t2 Env.empty
 
-type term = t
+module TermPair = struct
+  type term = t
+  type t = term * term
+  let compare = compare
+end
 
-module F = Memo.Sigma (struct type t = term * term let compare = compare end) (Memo.GenSym)
+module F = Memo.Sigma (TermPair) (Memo.GenSym)
 
 let rec anti_unify' sigma = function
   | TermAppl (f,ts1),TermAppl (g,ts2) when f = g ->

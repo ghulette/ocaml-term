@@ -19,5 +19,5 @@ val to_string : t -> string
 val is_ground : t -> bool
 val variables : t -> var list
 val subst : env -> t -> t
-val unify : t -> t -> env -> env option
+val unify : t -> t -> env option
 val anti_unify : t -> t -> t
