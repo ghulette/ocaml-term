@@ -25,13 +25,8 @@ appl:
   | tfun LPAREN terms RPAREN { TermAppl ($1,$3) }
   | tfun                     { TermAppl ($1,[]) }
 
-list:
-  | LBRACKET RBRACKET         { TermList [] }
-  | LBRACKET terms RBRACKET   { TermList $2 }
-
 term:
   | appl                   { $1 }
-  | list                   { $1 }
   | LANGLE tfun RANGLE     { TermVar $2 }
   | INT                    { TermVal (IntVal $1) }
   | REAL                   { TermVal (RealVal $1) }

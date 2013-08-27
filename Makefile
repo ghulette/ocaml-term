@@ -3,6 +3,7 @@ SOURCES = util.mli util.ml \
           monad.mli monad.ml \
           relation.mli relation.ml \
           intern.mli intern.ml \
+	  memo.mli memo.ml \
           env.mli env.ml \
           term.mli term.ml \
           grammar.mly token.mll \
