@@ -1,16 +1,9 @@
 type atom = Intern.t
-
-type value =
-  | BoolVal of bool
-  | CharVal of char
-  | IntVal of Int32.t
-  | RealVal of Int64.t
-
 type var = Env.var
 
 type t =
   | TermVar of var
-  | TermVal of value
+  | TermVal of Value.t
   | TermAppl of atom * t list
 
 type env = t Env.t

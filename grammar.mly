@@ -1,6 +1,5 @@
 %token LPAREN RPAREN LBRACKET RBRACKET LANGLE RANGLE COMMA
 %token <Int32.t> INT
-%token <Int64.t> REAL
 %token <string> ID
 
 %{
@@ -28,5 +27,4 @@ appl:
 term:
   | appl                   { $1 }
   | LANGLE tfun RANGLE     { TermVar $2 }
-  | INT                    { TermVal (IntVal $1) }
-  | REAL                   { TermVal (RealVal $1) }
+  | INT                    { TermVal (Value.int_value $1) }

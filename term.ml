@@ -1,27 +1,14 @@
 module O : (Monad.S with type 'a t = 'a option) = Monad.Make (Option)
 
 type atom = Intern.t
-
-type value =
-  | BoolVal of bool
-  | CharVal of char
-  | IntVal of Int32.t
-  | RealVal of Int64.t
-
 type var = Env.var
 
 type t =
   | TermVar of var
-  | TermVal of value
+  | TermVal of Value.t
   | TermAppl of atom * (t list)
 
 type env = t Env.t
-
-let string_of_value = function
-  | BoolVal b -> string_of_bool b
-  | CharVal c -> Char.escaped c
-  | IntVal i -> Int32.to_string i
-  | RealVal r -> Int64.to_string r
 
 let rec string_of_terms ts = 
   let ss = List.map string_of_term ts in
@@ -29,7 +16,7 @@ let rec string_of_terms ts =
 
 and string_of_term = function
   | TermVar x -> "<" ^ (Intern.to_string x) ^ ">"
-  | TermVal x -> string_of_value x
+  | TermVal x -> Value.to_string x
   | TermAppl (f,[]) -> Intern.to_string f
   | TermAppl (f,ts) -> 
     (Intern.to_string f) ^ "(" ^ (string_of_terms ts) ^ ")"
