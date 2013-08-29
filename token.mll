@@ -15,5 +15,5 @@ rule lex = parse
   | "<"               { LANGLE }
   | ">"               { RANGLE }
   | ","               { COMMA }
-  | digit+ as s       { INT (Int32.of_string s) } 
+  | digit+ as s       { INT (int_of_string s) } 
   | ident as s        { ID s }

@@ -1,5 +1,5 @@
 %token LPAREN RPAREN LBRACKET RBRACKET LANGLE RANGLE COMMA
-%token <Int32.t> INT
+%token <int> INT
 %token <string> ID
 
 %{

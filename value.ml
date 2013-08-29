@@ -6,7 +6,7 @@ type t =
 
 let bool_value b = BoolVal b
 let char_value c = CharVal c
-let int_value n = IntVal n
+let int_value n = IntVal (Int32.of_int n)
 let real_value x = RealVal (Int64.bits_of_float x)
 
 let to_string = function
