@@ -6,10 +6,10 @@ let rule t1 t2 =
   let r = Rewrite.make t1 t2 in
   fun t -> Rewrite.apply r t
 
-let succeed = 
+let succeed =
   fun t -> Some t
 
-let fail = 
+let fail =
   fun _ -> None
 
 let negate s = fun t -> 
