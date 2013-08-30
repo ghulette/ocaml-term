@@ -8,6 +8,7 @@ SOURCES = util.mli util.ml \
           env.mli env.ml \
           term.mli term.ml \
 	  rewrite.mli rewrite.ml \
+	  strategy.mli strategy.ml \
           grammar.mly token.mll \
           main.ml
 RESULT = term

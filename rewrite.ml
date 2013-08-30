@@ -1,6 +1,6 @@
 type t = {lhs : Term.t; rhs : Term.t}
 
-let rule t1 t2 = 
+let make t1 t2 = 
   {lhs = t1; rhs = t2}
 
 let apply r t =
