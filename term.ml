@@ -10,3 +10,6 @@ let from_channel c =
 
 include Unification
 include Antiunification
+
+let printer fr t =
+  Format.pp_print_string fr (to_string t)

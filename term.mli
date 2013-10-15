@@ -8,6 +8,7 @@ type t =
 val from_string : string -> t
 val from_channel : in_channel -> t
 val to_string : t -> string
+val printer : Format.formatter -> t -> unit
 val is_ground : t -> bool
 val variables : t -> atom list
 
