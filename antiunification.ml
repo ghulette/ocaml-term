@@ -37,3 +37,22 @@ module Sigma (Ord : Map.OrderedType) (Gen : Generator) = struct
 	let v = Gen.gen () in
 	m := M.add k v !m; v
 end
+
+module TermPair = struct
+  type t = Term_base.t * Term_base.t
+  let compare = compare
+end
+
+module F = Sigma (TermPair) (GenSym)
+
+open Term_base
+
+let rec anti_unify' sigma = function
+  | TermAppl (f,ts1),TermAppl (g,ts2) when f = g ->
+    let ts = List.map (anti_unify' sigma) (List.combine ts1 ts2) in
+    TermAppl (f,ts)
+  | TermVal x,TermVal y when x = y -> TermVal x
+  | tt -> let x = F.memo sigma tt in TermVar x
+
+let anti_unify t1 t2 =
+  anti_unify' F.empty (t1,t2)

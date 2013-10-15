@@ -1,10 +1,12 @@
 type atom = Intern.t
 
-type t =
+type t = 
   | TermVar of atom
   | TermVal of Value.t
   | TermAppl of atom * t list
 
+val from_string : string -> t
+val from_channel : in_channel -> t
 val to_string : t -> string
 val is_ground : t -> bool
 val variables : t -> atom list

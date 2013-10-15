@@ -3,12 +3,12 @@
 %token <string> ID
 
 %{
-open Term
+open Term_base
 open Intern
 %}
 
 %start term
-%type <Term.t> term
+%type <Term_base.t> term
 
 %%
 
