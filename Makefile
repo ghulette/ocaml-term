@@ -5,7 +5,6 @@ SOURCES = util.mli util.ml \
 	  value.mli value.ml \
           intern.mli intern.ml \
 	  memo.mli memo.ml \
-          env.mli env.ml \
           term.mli term.ml \
 	  rewrite.mli rewrite.ml \
 	  strategy.mli strategy.ml \

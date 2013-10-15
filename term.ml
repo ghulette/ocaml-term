@@ -1,14 +1,12 @@
 module O : (Monad.S with type 'a t = 'a option) = Monad.Make (Option)
 
 type atom = Intern.t
-type var = Env.var
 
 type t =
-  | TermVar of var
+  | TermVar of atom
   | TermVal of Value.t
   | TermAppl of atom * (t list)
 
-type env = t Env.t
 
 let rec string_of_terms ts = 
   let ss = List.map string_of_term ts in
@@ -41,8 +39,43 @@ let rec variable_set = function
 let variables t =
   S.elements (variable_set t)
 
+
+(*******************************************************************************
+
+  Unification, substitution, and environment
+
+*******************************************************************************)
+
+module Env = struct
+
+  module M : (Map.S with type key = Intern.t) = Map.Make (Intern)
+
+  type 'a t = 'a M.t
+
+  let empty = M.empty
+
+  let find x e = 
+    try Some (M.find x e) with Not_found -> None
+
+  (* Extend will fail if the variable is already bound to a different
+     value than the one we are trying to bind. *)
+  let extend x v e =
+    match find x e with
+      | None -> Some (M.add x v e)
+      | Some v' when v = v' -> Some e
+      | Some _ -> None
+
+  let to_list e =
+    List.map (fun (x,v) -> (Intern.to_string x,v)) (M.bindings e)
+
+  let from_list l =
+    O.fold (fun e (x,v) -> extend (Intern.intern x) v e) empty l
+end
+
+type env = t Env.t
+
 let rec dealias x e = 
-  match Env.lookup x e with
+  match Env.find x e with
   | Some (TermVar y) -> dealias y e
   | _ -> x
 
@@ -54,7 +87,7 @@ let rec subst e t =
   match t with
   | TermVar x -> 
     let x' = dealias x e in
-    begin match Env.lookup x' e with
+    begin match Env.find x' e with
     | Some v -> v
     | None -> TermVar x'
     end
