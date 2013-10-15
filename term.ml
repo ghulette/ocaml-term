@@ -10,5 +10,3 @@ let from_channel c =
 
 include Unification
 include Antiunification
-
-

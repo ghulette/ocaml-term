@@ -7,7 +7,6 @@
 module O : (Monad.S with type 'a t = 'a option) = Monad.Make (Option)
 
 module Env = struct
-
   module M : (Map.S with type key = Intern.t) = Map.Make (Intern)
 
   type 'a t = 'a M.t
